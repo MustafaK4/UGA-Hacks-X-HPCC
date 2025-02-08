@@ -3,7 +3,7 @@ SpotMusic := $.File_Music.SpotDS;
 
 //display the first 150 records
 
-OUTPUT(CHOOSEN(SpotMusic, 150), NAMED('Raw_MusicDS'));
+//OUTPUT(CHOOSEN(SpotMusic, 150), NAMED('Raw_MusicDS'));
 
 
 //*********************************************************************************
@@ -13,6 +13,9 @@ OUTPUT(CHOOSEN(SpotMusic, 150), NAMED('Raw_MusicDS'));
 
 //*********************************************************************************
 //*********************************************************************************
+
+//TEMP
+OUTPUT(CHOOSEN(SpotMusic, 10), NAMED('Raw_MusicDS'));
 
 //Challenge: 
 //Sort songs by genre and count the number of songs in your total music dataset 
