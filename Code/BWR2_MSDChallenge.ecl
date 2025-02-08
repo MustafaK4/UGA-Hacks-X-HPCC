@@ -19,13 +19,13 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 //Result: Total count is 1000000
 
 //Reverse sort by "year"
-
+CisuMDSM := SORT(MSDMusic, -year);
 
 //display the first 50
 
 
 //Count and display result
-
+OUTPUT(CHOOSEN(CisuMDSM, 50), NAMED('Music_Backwards'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -35,10 +35,12 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 //Result should have 9397 songs for 2010
 
 //Filter for 2010 and display the first 50
-
+MusicOf2010 := MSDMusic(year = 2010);
+OUTPUT(CHOOSEN(MusicOf2010, 50), NAMED('Music2010First50'));
 
 //Count total songs released in 2010:
-
+CountAll := COUNT(MSDMusic);
+OUTPUT(CHOOSEN(MusicOf2010, CountAll), NAMED('Music2010Total'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -51,6 +53,10 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 
 //Count and print total 
 
+Prince1982 := MSDMusic(year = 1982, artist_name = 'Prince');
+CountPrince := COUNT(Prince1982);
+OUTPUT(CHOOSEN(Prince1982, CountPrince), NAMED('PrinceMusicIn1982'));
+
 //*********************************************************************************
 //*********************************************************************************
 //Challenge: 
@@ -60,8 +66,11 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 
 //Filter for "Into Temptation"
 
-
 //Display result 
+
+IntoTemptationWho := MSDMusic(title = 'Into Temptation');
+CountIntoTemptation := COUNT(IntoTemptationWho);
+OUTPUT(CHOOSEN(IntoTemptationWho, CountIntoTemptation), NAMED('IntoTemptation'));
 
 
 //*********************************************************************************
@@ -72,26 +81,32 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 //Result: The first 10 records have no artist name, followed by "- PlusMinus"                                     
 
 //Sort dataset by Artist, and Title
+ArtistSortation := SORT(MSDMusic, artist_name, title);
 
 
 //Output the first 100
-
+OUTPUT(CHOOSEN(ArtistSortation, 100), NAMED('SortedArtistSong'));
 
 //*********************************************************************************
 //*********************************************************************************
 //Challenge: 
 //What is the hottest song by year in the Million Song Dataset?
 //Sort Result by Year (filter iut zero Year values)
+SortByYear := SORT(MSDMusic, year != 0);
 
 //Result is 
 
 //Get the datasets maximum hotness value
+MaxHotness := MAX(MSDMusic, song_hotness);
 
 
 //Filter dataset for the maxHot value
-
+DatasetMaxFilter := MSDMusic(song_hotness = MaxHotness);
+CountEvery := COUNT(DatasetMaxFilter);
 
 //Display the result
+OUTPUT(CHOOSEN(DatasetMaxFilter, CountEvery), NAMED('SongWithTheHighestHotScore'));
+
 
 
 //*********************************************************************************
@@ -109,15 +124,19 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 //Result has 47 records
 
 //Get songs by defined conditions
+ColdplayLargerHotScore := MSDMusic(artist_name = 'Coldplay', song_hotness >= .75);
 
 
 //Sort the result
+ColdplaySort := SORT(ColdplayLargerHotScore, title);
 
 
 //Output the result
 
 
 //Count and output result 
+ColdplayCount := COUNT(ColdplaySort);
+OUTPUT(CHOOSEN(ColdplaySort, ColdplayCount), NAMED('ColdplayResults'));
 
 
 //*********************************************************************************
@@ -132,12 +151,13 @@ OUTPUT(CHOOSEN(MSDMusic, 150), NAMED('Raw_MusicDS'));
 //Hint: (SongDuration BETWEEN 200 AND 250)
 
 //Filter for required conditions
+DurationFilter := MSDMusic(duration >= 200, duration <= 250, song_hotness != 0, familiarity > .9);
 
 //Count result
-                            
+DurationCounter := COUNT(DurationFilter);              
 
 //Display result
-
+OUTPUT(CHOOSEN(DurationFilter, DurationCounter), NAMED('DurationOfSongs'));
 
 //*********************************************************************************
 //*********************************************************************************
