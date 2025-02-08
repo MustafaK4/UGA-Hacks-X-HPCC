@@ -1,9 +1,10 @@
-﻿IMPORT $;
+﻿#OPTION('obfuscateOutput', TRUE);
+IMPORT $;
 SpotMusic := $.File_Music.SpotDS;
 
 //display the first 150 records
 
-//OUTPUT(CHOOSEN(SpotMusic, 150), NAMED('Raw_MusicDS'));
+OUTPUT(CHOOSEN(SpotMusic, 150), NAMED('Raw_MusicDS'));
 
 
 //*********************************************************************************
@@ -14,23 +15,19 @@ SpotMusic := $.File_Music.SpotDS;
 //*********************************************************************************
 //*********************************************************************************
 
-//TEMP
-OUTPUT(CHOOSEN(SpotMusic, 10), NAMED('Raw_MusicDS'));
 
 //Challenge: 
 //Sort songs by genre and count the number of songs in your total music dataset 
-
  
-
 //Sort by "genre" (See SORT function)
-
+sortedGenre := sort(SpotMusic, genre);
 
 //Display them: (See OUTPUT)
-
+output(sortedGenre, NAMED('Sorted_By_Genre'));
 
 //Count and display result (See COUNT)
 //Result: Total count is 1159764:
-
+output(count(sortedGenre), NAMED('Count_By_Genre'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -38,10 +35,12 @@ OUTPUT(CHOOSEN(SpotMusic, 10), NAMED('Raw_MusicDS'));
 //Challenge: 
 //Display songs by "garage" genre and then count the total 
 //Filter for garage genre and OUTPUT them:
-
+garageSongs := SpotMusic(genre='garage');
+output(garageSongs, named('Garage_Songs'));
 
 //Count total garage songs
 //Result should have 17123 records:
+output(count(garageSongs), named('Count_Garage_Songs'));
 
 
 //*********************************************************************************
@@ -49,12 +48,12 @@ OUTPUT(CHOOSEN(SpotMusic, 10), NAMED('Raw_MusicDS'));
 
 //Challenge: 
 //Count how many songs was produced by "Prince" in 2001
-
 //Filter ds for 'Prince' AND 2001
-
+prince2001 := SpotMusic(artist_name='Prince' and year=2001);
 
 //Count and output total - should be 35 
-
+output(prince2001, named('Prince_Songs_2001'));
+output(count(prince2001), named('Count_Prince_Songs_2001'));
 
 
 //*********************************************************************************
@@ -68,6 +67,7 @@ OUTPUT(CHOOSEN(SpotMusic, 10), NAMED('Raw_MusicDS'));
 //Filter for "Temptation to Exist" (name is case sensitive)
 
 //Display result 
+output(SpotMusic(track_name='Temptation to Exist').artist_name, named('Temptation'));
 
 
 //*********************************************************************************

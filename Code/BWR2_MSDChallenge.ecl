@@ -1,4 +1,5 @@
-﻿IMPORT $;
+﻿#OPTION('obfuscateOutput', TRUE);
+IMPORT $;
 MSDMusic := $.File_Music.MSDDS;
 
 //display the first 150 records
