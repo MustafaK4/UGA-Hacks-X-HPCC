@@ -1,4 +1,5 @@
-﻿IMPORT $;
+﻿#OPTION('obfuscateOutput', TRUE);
+IMPORT $;
 MozMusic  := $.File_Music.MozDS;
 MSDMusic  := $.File_Music.MSDDS;
 SpotMusic := $.File_Music.SpotDS;

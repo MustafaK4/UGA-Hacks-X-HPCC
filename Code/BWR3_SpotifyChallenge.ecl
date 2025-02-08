@@ -67,7 +67,7 @@ output(count(prince2001), named('Count_Prince_Songs_2001'));
 //Filter for "Temptation to Exist" (name is case sensitive)
 
 //Display result 
-output(SpotMusic(track_name='Temptation to Exist').artist_name, named('Temptation'));
+output(SpotMusic(track_name='Temptation to Exist'), named('Temptation'));
 
 
 //*********************************************************************************
