@@ -85,9 +85,11 @@ output(SpotMusic(track_name='Temptation to Exist'), named('Temptation'));
 
 
 //Sort dataset by Artist_name, and track_name:
+sortedArtistTrack := sort(SpotMusic, artist_name, track_name);
 
 
 //Output here:
+output(sortedArtistTrack, named('Sorted_Artist_Track'));
 
 
 
@@ -98,13 +100,13 @@ output(SpotMusic(track_name='Temptation to Exist'), named('Temptation'));
 //Find the MOST Popular song using "Popularity" field
 
 //Get the most Popular value (Hint: use MAX)
-
+mostPopVal := max(SpotMusic, SpotMusic.popularity);
 
 //Filter dataset for the mostPop value
-
+mostPopSong := SpotMusic(popularity=mostPopVal);
 
 //Display the result - should be "Flowers" by Miley Cyrus
-
+output(mostPopSong, named('Most_Popular_Song'));
 
 
 //*********************************************************************************
