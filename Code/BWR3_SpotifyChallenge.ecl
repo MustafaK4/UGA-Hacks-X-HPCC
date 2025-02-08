@@ -125,16 +125,16 @@ output(mostPopSong, named('Most_Popular_Song'));
 //Result has 9 records
 
 //Get songs by defined conditions
-
+coldPop := SpotMusic(artist_name='Coldplay', popularity>=75);
 
 //Sort the result
-
+sortedColdPop := sort(coldPop, track_name);
 
 //Output the result
-
+output(sortedColdPop, named('Popular_Coldplay_Songs'));
 
 //Count and output result 
-
+output(count(sortedColdPop), named('Count_By_Coldplay_Popularity'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -144,11 +144,11 @@ output(mostPopSong, named('Most_Popular_Song'));
 //Hint: (Duration_ms BETWEEN 200000 AND 250000)
 
 //Filter for required conditions
-                          
+mediumSongs := SpotMusic(duration_ms between 200000 AND 250000, speechiness>0.75);
 
 //Count result (should be 2153):
-
 //Display result:
+output(count(mediumSongs), named('Medium_Songs_That_Dont_Shut_Up'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -163,13 +163,31 @@ output(mostPopSong, named('Most_Popular_Song'));
 //Use PROJECT, to loop through your music dataset
 
 //Define RECORD here:
+simpleLayout := record 
+    string Artist;
+    string Title;
+    integer Year;
+end;
+
+inputLayout := record
+    string artist_name;
+    string track_name;
+    integer year;
+end;
 
 //Standalone TRANSFORM Here 
+simpleTransform := TRANSFORM(simpleLayout, 
+    self.Artist := left.artist_name;
+    self.Title := left.track_name;
+    self.Year := left.year;
+    left := inputLayout;
+);
 
 //PROJECT here:
+//filteredDataset := PROJECT(SpotMusic, simpleTransform());
 
 //OUTPUT your PROJECT here:
-      
+//output(filteredDataset, named('Simple_Dataset'));
 
 //*********************************************************************************
 //*********************************************************************************
