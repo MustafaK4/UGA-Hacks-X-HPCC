@@ -1,4 +1,4 @@
-﻿#OPTION('obfuscateOutput', TRUE);
+﻿//#OPTION('obfuscateOutput', TRUE);
 IMPORT $;
 MSDMusic := $.File_Music.MSDDS;
 
