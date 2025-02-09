@@ -166,35 +166,33 @@ output(count(mediumSongs), named('Medium_Songs_That_Dont_Shut_Up'));
 simpleLayout := record 
     string Artist;
     string Title;
-    integer Year;
-end;
-
-inputLayout := record
-    string artist_name;
-    string track_name;
-    integer year;
+    unsigned2 Year;
 end;
 
 //Standalone TRANSFORM Here 
-simpleTransform := TRANSFORM(simpleLayout, 
+//PROJECT here:
+filteredDataset := project(SpotMusic, TRANSFORM(simpleLayout, 
     self.Artist := left.artist_name;
     self.Title := left.track_name;
     self.Year := left.year;
-    left := inputLayout;
-);
-
-//PROJECT here:
-//filteredDataset := PROJECT(SpotMusic, simpleTransform());
+));
 
 //OUTPUT your PROJECT here:
-//output(filteredDataset, named('Simple_Dataset'));
+output(filteredDataset, named('Simple_Dataset'));
 
 //*********************************************************************************
 //*********************************************************************************
 
 //COORELATION Challenge: 
 //1- What’s the correlation between "Popularity" AND "Liveness"
+output(correlation(SpotMusic, SpotMusic.popularity, SpotMusic.liveness), named('Correlation_Pop_Liveness'));
+
+
+
 //2- What’s the correlation between "Loudness" AND "Energy"
+// For some reason the loudness and energy correlation isn't correct, but I don't know why
+// though i think that this is right, even if the answer is different
+output(correlation(SpotMusic, SpotMusic.loudness,  SpotMusic.energy), named('Correlation_Loudness_Energy'));
 
 //Result for liveness = -0.05696845812100079, Energy = -0.03441566150625201
 
@@ -217,21 +215,29 @@ simpleTransform := TRANSFORM(simpleLayout,
 //Display the output
 
 //Result should have 4 columns called "Song", "Artist", "isPopular", and "Funkiness"
-
-
 //Hint: Create your new layout and use TRANSFORM for new fields. 
 //      Use PROJECT, to loop through your music dataset
 
 //Define the RECORD layout
-
+funkyLayout := record 
+    string Song;
+    string Artist;
+    boolean isPopular;
+    decimal3_2 Funkiness;
+end;
 
 //Build TRANSFORM
-
-
 //Project here:
-
+funkyDataset := project(SpotMusic, TRANSFORM(funkyLayout, 
+    self.Song := left.track_name;
+    self.Artist := left.artist_name;
+    self.isPopular := left.popularity > 80;
+    self.Funkiness := left.energy + left.danceability;
+));
 
 //Display result here:
+//only outputting first 150
+OUTPUT(funkyDataset[..150],named('Funky_Dataset'));
 
 
                        
@@ -241,28 +247,33 @@ simpleTransform := TRANSFORM(simpleLayout,
 
 //Challenge: 
 //Display number of songs for each "Genre", output and count your total 
-
 //Result has 2 col, Genre and TotalSongs, count is 82
-
 //Hint: All you need is a TABLE - this is a CrossTab report 
 
+genreTable := table(SpotMusic, {genre, TotalSongs := count(group)}, genre);
+
 //Printing the first 50 records of the result      
+OUTPUT(genreTable[..50],named('Genre_CrossTab'));
+
 
 //Count and display total - there should be 82 unique genres
+output(count(genreTable),named('Genre_Counts'));
 
 //Bonus: What is the top genre?
+output(sort(genreTable, -TotalSongs)[..1],named('Top_Genre'));
 
 //*********************************************************************************
 //*********************************************************************************
 //Calculate the average "Danceability" per "Artist" for "Year" 2023
 
 //Hint: All you need is a TABLE 
-
 //Result has 37600 records with two col, Artist, and DancableRate.
-
 //Filter for year 2023
+filteredSpot2023 := SpotMusic(year=2023);
+danceTable := table(filteredSpot2023, {Artist := artist_name, DanceableRate := ave(group, danceability)}, artist_name);
 
 //OUTPUT the result    
+output(danceTable,named('Danceability'));
 
 
 
