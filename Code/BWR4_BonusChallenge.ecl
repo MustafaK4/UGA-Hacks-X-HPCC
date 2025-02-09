@@ -16,15 +16,14 @@ CombMusicLayout := RECORD
  STRING4  Source; //MOZ,MSD,SPOT
 END;
 
-OUTPUT('ToDo');
-
 newMoz := PROJECT(MozMusic, TRANSFORM(CombMusicLayout, 
   SELF.RECID:= (INTEGER) LEFT.id;
   SELF.SongTitle := LEFT.tracktitle;
   SELF.AlbumTitle := LEFT.title;
   SELF.Artist := LEFT.name;
   SELF.Genre := LEFT.genre;
-  SELF.ReleaseYear := LEFT.releasedate;
+  SELF.ReleaseYear := regexfind('\\b(19|20)\\d{2}\\b', LEFT.releasedate, 0);
+  //SELF.ReleaseYear := LEFT.releasedate;
   Self.Source := 'MOZ';
   SELF := LEFT;
   ));
@@ -54,8 +53,11 @@ newSpot := Project(SpotMusic, TRANSFORM (CombMusicLayout,
 
 CombinedMusic := newMoz + newMSD + newSpot;
 FinalMusic := DEDUP(CombinedMusic, SongTitle);
-SortedFinalMusic := SORT(FinalMusic, SongTitle);
+FilteredMusic := FinalMusic(SongTitle!='');
+//SortedFinalMusic := SORT(FinalMusic, -ReleaseYear);
+
+SortedFinalMusic := SORT(FilteredMusic, SongTitle);
 Output(SortedFinalMusic, NAMED('FinalMusicList'));
-Count(SortedFinalMusic);
+output(Count(SortedFinalMusic), named('Final_Music_Count'));
 
 //After doing this, create different playlists by Year and/or genre! Music is Life! 
