@@ -235,15 +235,26 @@ output(correlation(MSDMusic, barsstartdev,  beatsstartdev), named('Correlation_B
 //      Use PROJECT, to loop through your music dataset
 
 //Create the RECORD layout
-
+popLayout := record
+    string Song;
+    string Artist;
+    boolean isPopular;
+    boolean isTooLoud;
+end;
 
 //Build your TRANSFORM
+popLayout popTr(recordof(MSDMusic) le) := transform
+    self.Song := le.title;
+    self.Artist := le.artist_name;
+    self.isPopular := le.song_hotness>0.8;
+    self.isTooLoud := le.loudness>0;
+end;
 
 //Creating the PROJECT
-
+popSet := project(MSDMusic, popTr(left));
 
 //Display the result
-
+output(popSet, named('Popular_Loud_Music'));
                        
                                               
 //*********************************************************************************
@@ -255,9 +266,14 @@ output(correlation(MSDMusic, barsstartdev,  beatsstartdev), named('Correlation_B
 
 //Hint: All you need is a cross-tab TABLE 
 
-//Display the  result      
+yearTable := table(MSDMusic, {year, TotalSongs := count(group)}, year);
+
+//Display the result 
+// i'm sorting just cause
+output(sort(yearTable, year), named('Year_Counts'));
 
 //Count and display total number of years counted
+output(count(yearTable), named('Total_Years'));
 
 
 //*********************************************************************************
@@ -270,7 +286,10 @@ output(correlation(MSDMusic, barsstartdev,  beatsstartdev), named('Correlation_B
 // Output the top ten results showing two columns, Artist_Name, and HotRate.
 
 // Filter for year
+filtered20067 := MSDMusic(year=2006 or year=2007, song_hotness!=0);
 
 // Create a Cross-Tab TABLE:
+hot20067 := table(filtered20067, {artist_name, HotRate := ave(group, song_hotness)}, artist_name);
 
 // Display the top ten results with top "HotRate"      
+output(topn(hot20067, 10, -HotRate), named('Wonder_Artists'));
