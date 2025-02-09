@@ -2,6 +2,9 @@ HPCC Database Management
 Team Members: Mustafa Khan, Andrew Shank, Matthew Phanmanee
 Tier Level: Intermediate
 
+Directed by the Challenges provided by the HPCC, we learned a new language called the Enterprise Control Language (ECL) and manipulated 3 music-related datasets, which contained metadata such as Artist names, Song Names, and release years. The challenges involve sorting, filtering, and interpreting the data to answer a series of questions provided by HPCC.
+
+
 Shortened Project Log:
 Friday:
     Attended info sessions
