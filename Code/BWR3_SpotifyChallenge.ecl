@@ -192,7 +192,7 @@ output(correlation(SpotMusic, SpotMusic.popularity, SpotMusic.liveness), named('
 //2- What’s the correlation between "Loudness" AND "Energy"
 // For some reason the loudness and energy correlation isn't correct, but I don't know why
 // though i think that this is right, even if the answer is different
-output(correlation(SpotMusic, SpotMusic.loudness,  SpotMusic.energy), named('Correlation_Loudness_Energy'));
+output(correlation(SpotMusic, SpotMusic.loudness,  (real4)SpotMusic.energy), named('Correlation_Loudness_Energy'));
 
 //Result for liveness = -0.05696845812100079, Energy = -0.03441566150625201
 
@@ -232,7 +232,7 @@ funkyDataset := project(SpotMusic, TRANSFORM(funkyLayout,
     self.Song := left.track_name;
     self.Artist := left.artist_name;
     self.isPopular := left.popularity > 80;
-    self.Funkiness := left.energy + left.danceability;
+    self.Funkiness := (real4)left.energy + left.danceability;
 ));
 
 //Display result here:

@@ -72,8 +72,7 @@ EXPORT SpotMillion := RECORD
     UNSIGNED2 year;             //2000 to 2023
     STRING17  genre;            
     REAL4     danceability;     //0.0 to 1.0
-    // CHANGED THIS ONE
-    REAL4     energy;           //the perpetual measure of intensity and activity (0.0 to 1.0)
+    STRING8   energy;           //the perpetual measure of intensity and activity (0.0 to 1.0)
     UNSIGNED1 key;              //the key the track is in (-1 to -11)
     REAL4     loudness;         //overall loudness of track in decibels (-60 to 0db) 
     UNSIGNED1 mode;             //modality of the track (Major = 1/Minor = 0)
