@@ -17,7 +17,7 @@ OUTPUT(CHOOSEN(MozMusic, 150), NAMED('Moz_MusicDS'));
 //Challenge: 
 //Count all the records in the dataset:
 
-COUNT(MozMusic);
+output(COUNT(MozMusic), named('CountAllRecords'));
 
 //Result: Total count is 136510
 
@@ -41,8 +41,8 @@ tempRock := MOZMUSIC(genre='Rock');
 //Result should have 12821 Rock songs
 
 //Display your Rock songs (OUTPUT):
-Count(tempRock);
 OUTPUT(tempRock, NAMED('RockSongs'));
+output(Count(tempRock), named ('RockSongsCount'));
 //*********************************************************************************
 //*********************************************************************************
 //Challenge: 
@@ -54,7 +54,7 @@ OUTPUT(tempRock, NAMED('RockSongs'));
 //Result should have 127 songs 
 
 tempDepeche := MozMusic((name = 'Depeche_Mode'),(releasedate >= '1980'),(releasedate <= '1989'));
-COUNT(tempDepeche);
+output(COUNT(tempDepeche), named('CountDepeche_Mode'));
 OUTPUT(tempDepeche, NAMED('Depeche_Mode'));
 
 //Bonus points: filter out duplicate tracks (Hint: look at DEDUP):
@@ -71,7 +71,7 @@ OUTPUT(tempDepeche, NAMED('Depeche_Mode'));
 //Display count and result 
 
 SangMyWay := MozMusic(tracktitle = 'My Way');
-Count(SangMyWay);
+output(Count(SangMyWay), named('CountMyWay'));
 OUTPUT(CHOOSEN(SangMyWay, 127), NAMED('SangMyWay'));
 
 //*********************************************************************************
@@ -114,7 +114,7 @@ Sortedu2 := SORT(U2Songs, tracktitle);
 OUTPUT(CHOOSEN(Sortedu2, 190), NAMED('U2Songs'));
 
 //Count result 
-COUNT(Sortedu2);
+output(COUNT(Sortedu2), named('CountU2Songs'));
 
 //Result has 190 records
 
@@ -132,7 +132,7 @@ GuestSort := MozMusic(guestmusicians != '');
 
 //Display Count result
 
-Count(GuestSort);
+output(Count(GuestSort), named('CountGuestMusicians'));
 
 //Result should be 44588 songs  
 
