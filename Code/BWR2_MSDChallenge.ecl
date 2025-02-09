@@ -172,19 +172,44 @@ OUTPUT(CHOOSEN(DurationFilter, DurationCounter), NAMED('DurationOfSongs'));
 
 
 //Standalone Transform 
+simpleLayout := record
+    string Title;
+    string Artist_Name;
+    string Release_Name;
+    unsigned2 Year;
+end;
+
+simpleLayout simpleSet(recordof(MSDMusic) le) := transform
+    self.Title := le.title;
+    self.Artist_Name := le.artist_name;
+    self.Release_Name := le.release_name;
+    self.Year := le.year;
+end;
 
 //PROJECT
+simpleProj := project(MSDMusic, simpleSet(left));
 
 // Display result  
+output(simpleProj, named('Simplified_Dataset'));
 
 //*********************************************************************************
 //*********************************************************************************
 
 //Challenge: 
+
+// need to filter the songs to only those with some hotness
+filteredHotness := MSDMusic(song_hotness!=0, artist_hotness!=0);
+
 //1- What’s the correlation between "song_hotness" AND "artist_hotness"
+output(correlation(filteredHotness, song_hotness,  artist_hotness), named('Correlation_Hotness'));
+
+
 //2- What’s the correlation between "barsstartdev" AND "beatsstartdev"
+output(correlation(MSDMusic, barsstartdev,  beatsstartdev), named('Correlation_BeatsBars_Start'));
+
 
 //Result for hotness = 0.4706972681953097, StartDev = 0.8896342348554744
+
 
 
 
