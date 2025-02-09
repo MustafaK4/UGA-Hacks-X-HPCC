@@ -29,20 +29,20 @@ COUNT(MozMusic);
 
 //You should see a lot of songs by NSync 
 
-
+SortedNames := SORT(MozMusic, name);
+OUTPUT(CHOOSEN(SortedNames, 50), NAMED('SortByName'));
 
 //*********************************************************************************
 //*********************************************************************************
 //Challenge: 
 //Count total songs in the "Rock" genre and display number:
 
-MOZMUSIC(genre='Country');
+tempRock := MOZMUSIC(genre='Rock');
 //Result should have 12821 Rock songs
 
 //Display your Rock songs (OUTPUT):
-
-
-
+Count(tempRock);
+OUTPUT(tempRock, NAMED('RockSongs'));
 //*********************************************************************************
 //*********************************************************************************
 //Challenge: 
@@ -53,6 +53,9 @@ MOZMUSIC(genre='Country');
 // Count and display total
 //Result should have 127 songs 
 
+tempDepeche := MozMusic((name = 'Depeche_Mode'),(releasedate >= '1980'),(releasedate <= '1989'));
+COUNT(tempDepeche);
+OUTPUT(tempDepeche, NAMED('Depeche_Mode'));
 
 //Bonus points: filter out duplicate tracks (Hint: look at DEDUP):
 
@@ -67,6 +70,9 @@ MOZMUSIC(genre='Country');
 
 //Display count and result 
 
+SangMyWay := MozMusic(tracktitle = 'My Way');
+Count(SangMyWay);
+OUTPUT(CHOOSEN(SangMyWay, 127), NAMED('SangMyWay'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -83,6 +89,10 @@ MOZMUSIC(genre='Country');
 
 //Longest track title is by the "The Brand New Heavies"               
 
+CDFormat := MozMusic(formats = 'CD');
+longtitle := Max(CDFormat, length(TRIM(tracktitle)));
+SortedLength := CDFormat(length(TRIM(tracktitle)) = longtitle);
+OUTPUT(SortedLength, NAMED('LongestTitle'));
 
 //*********************************************************************************
 //*********************************************************************************
@@ -95,16 +105,16 @@ MOZMUSIC(genre='Country');
 //Display all songs produced by "U2" , SORT it by title.
 
 //Filter track by artist
-
+U2Songs := MozMusic(name = 'U2');
 
 //Sort the result by tracktitle
-
+Sortedu2 := SORT(U2Songs, tracktitle);
 
 //Output the result
-
+OUTPUT(CHOOSEN(Sortedu2, 190), NAMED('U2Songs'));
 
 //Count result 
-
+COUNT(Sortedu2);
 
 //Result has 190 records
 
@@ -118,9 +128,11 @@ MOZMUSIC(genre='Country');
 
 //Filter for "guestmusicians"
 
+GuestSort := MozMusic(guestmusicians != '');    
 
 //Display Count result
-                             
+
+Count(GuestSort);
 
 //Result should be 44588 songs  
 
@@ -138,16 +150,28 @@ MOZMUSIC(genre='Country');
 
 //Hint: First create your new RECORD layout  
 
-
+createRecord := RECORD
+  STRING track;
+  STRING release;
+  STRING artist;
+  STRING year;
+END;
 
 //Next: Standalone Transform - use TRANSFORM for new fields.
 
 
 //Use PROJECT, to loop through your music dataset
 
+newRecord := PROJECT(MozMusic, TRANSFORM(createRecord, 
+  SELF.track := LEFT.tracktitle;
+  SELF.release := LEFT.title;
+  SELF.artist := LEFT.name;
+  SELF.year := LEFT.releasedate;
+  SELF := LEFT;));
 
 // Display result  
-      
+
+OUTPUT(newRecord, NAMED('NewRecord')); 
 
 //*********************************************************************************
 //*********************************************************************************
@@ -167,6 +191,13 @@ MOZMUSIC(genre='Country');
 
 //Count and display total records in TABLE
 
+crossLayout := RECORD
+  MozMusic.genre;
+  TotalSongs := COUNT(GROUP);
+END;
+
+T1 := TABLE(MozMusic, crossLayout, genre);
+OUTPUT(T1, NAMED('GenreCount'));
 
 //Result has 2 fields, Genre and TotalSongs, count is 1000
 
@@ -182,5 +213,13 @@ MOZMUSIC(genre='Country');
 
 //Cross-tab TABLE
 
+crossLayout2 := RECORD
+    MozMusic.name;
+    TitleCnt := COUNT(GROUP);
+END;
+
+t2 := TABLE(MozMusic((releasedate >= '2001'),(releasedate <= '2010')), crossLayout2, name);
+t3 := SORT(t2, - TitleCnt);
+OUTPUT(CHOOSEN(t3, 1), NAMED('TopArtist'));
 
 //Display the result      
